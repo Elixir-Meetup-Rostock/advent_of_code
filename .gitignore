@@ -32,3 +32,5 @@ advent_of_code-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# postgres log
+logfile
