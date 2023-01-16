@@ -23,9 +23,41 @@ defmodule AdventOfCode.Day2 do
     The third round is a draw with both players choosing Scissors, giving you a score of 3 + 3 = 6.
   """
 
+  @sign_atoms %{
+    "A" => :rock,
+    "B" => :paper,
+    "C" => :scissors
+  }
+
+  @result_atoms %{
+    "X" => :loss,
+    "Y" => :draw,
+    "Z" => :win
+  }
+
+  @points %{
+    rock: 1,
+    paper: 2,
+    scissors: 3,
+    loss: 0,
+    draw: 3,
+    win: 6
+  }
+
   defp load_file do
     File.stream!("./cache/day2.txt")
   end
+
+  def part_0() do
+    load_file()
+    |> Enum.map(&String.trim_trailing/1)
+    |> Enum.map(&String.split/1)
+    |> Enum.map(fn [sign, result] -> [@sign_atoms[sign], @result_atoms[result]] end)
+    |> Enum.map(fn [x, y] -> @points[x] + @points[y] end)
+    |> dbg()
+  end
+
+  defp foo_bar(my_list), do: Enum.map(my_list, &@tokens[&1])
 
   def part_1() do
     load_file()
@@ -50,6 +82,39 @@ defmodule AdventOfCode.Day2 do
   # Z means you need to win.
 
   def part_2() do
-    :noop
+    load_file()
+    |> Enum.map(&String.trim_trailing/1)
+    |> Enum.map(&String.split/1)
+    |> Enum.map(&follow_correct_strategy/1)
+    |> Enum.map(&score/1)
+    |> Enum.sum()
+    |> dbg()
   end
+
+  # loose
+  defp follow_correct_strategy([opponent, "X"]) do
+    [opponent, loose(opponent)]
+  end
+
+  # draw
+  defp follow_correct_strategy([opponent, "Y"]) do
+    [opponent, draw(opponent)]
+  end
+
+  # win
+  defp follow_correct_strategy([opponent, "Z"]) do
+    [opponent, win(opponent)]
+  end
+
+  defp loose("A"), do: "Z"
+  defp loose("B"), do: "X"
+  defp loose("C"), do: "Y"
+
+  defp draw("A"), do: "X"
+  defp draw("B"), do: "Y"
+  defp draw("C"), do: "Z"
+
+  defp win("A"), do: "Y"
+  defp win("B"), do: "Z"
+  defp win("C"), do: "X"
 end
