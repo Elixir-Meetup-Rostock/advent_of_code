@@ -26,8 +26,8 @@ defmodule Day2.Rules do
   def rps(:paper, :scissors), do: :loss
 
   def rps(:scissors, :rock), do: :loss
-  
-  
+  def rps(:scissors, :paper), do: :win
+
   @options @tokens |> Map.take(["A", "B", "C"]) |> Map.values()
   def points(token), do: Map.get(@points, token)
 
@@ -41,8 +41,8 @@ defmodule Day2.Rules do
     |> Map.new()
   end
 
-  
-  def rps(:scissors, :paper), do: :win
+
+
 
   def token(letter), do: Map.get(@tokens, letter)
 end
@@ -81,4 +81,3 @@ defmodule Day2.Part2 do
     |> then(&[t1, &1])
   end
 end
-
