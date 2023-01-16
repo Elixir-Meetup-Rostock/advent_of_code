@@ -41,9 +41,6 @@ defmodule Day2.Rules do
     |> Map.new()
   end
 
-
-
-
   def token(letter), do: Map.get(@tokens, letter)
 end
 
